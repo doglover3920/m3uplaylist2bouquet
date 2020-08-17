@@ -4,7 +4,7 @@
 if [ "$1" = "" ]
     then
     echo "Usage: m3u2bouquet.sh m3ufile Name TID ServiceType"
-    echo "m3ufile: Name of the m3u file indluding path"
+    echo "m3ufile: Name of the m3u file including path"
     echo "Provider: Provider Name, to identfy the entries in the bouquet and channels file"
     echo "TID: Up to 4 digit hexadecimal number, to disguish the services from different providers"
     echo "Servicetype: 1, 4097, 5001 or 5002.  If omitted 4097 is used"
