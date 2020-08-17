@@ -62,6 +62,10 @@ while read line;do
             ChannelName=${line#*,}
             ChannelName=${ChannelName//$'\r'}
     fi
+    if [ "$ChannelName" = "" ]; then
+            ChannelName=${line#*,}
+            ChannelName=${ChannelName//$'\r'}
+    fi
     if [[ "$line" == *"group-title"* ]]; then
             Group=${line##*group-title=\"}
             group_title=${Group%%\"*}
