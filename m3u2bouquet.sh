@@ -46,7 +46,8 @@ while read line;do
     if [[ "$line" == *"tvg-chno"* ]]; then
             SID=${line##*tvg-chno=\"}
             SID=${SID%%\"*}
-        else
+    fi
+    if [ "$SID" = "" ]; then 
             SID=$j
     fi
     if [[ "$line" == *"tvg-id"* ]]; then   
