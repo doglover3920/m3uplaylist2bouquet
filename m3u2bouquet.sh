@@ -4,13 +4,14 @@
 if [ "$1" = "" ]
     then
     echo "Usage: m3u2bouquet.sh m3ufile Name TID ServiceType"
-    echo "m3ufile: Name of the m3u file including path"
+    echo "m3ufile: Name of the m3u file indluding path"
     echo "Provider: Provider Name, to identfy the entries in the bouquet and channels file"
     echo "TID: Up to 4 digit hexadecimal number, to disguish the services from different providers"
     echo "Servicetype: 1, 4097, 5001 or 5002.  If omitted 4097 is used"
-    echo "Version 1.0"  
+    echo "Version 1.1"  
 fi
 m3ufile=$1
+dos2unix ${m3ufile}
 Provider=$2
 Channelsfile=custom.channels.xml
 TID=$3
@@ -46,8 +47,7 @@ while read line;do
     if [[ "$line" == *"tvg-chno"* ]]; then
             SID=${line##*tvg-chno=\"}
             SID=${SID%%\"*}
-    fi
-    if [ "$SID" = "" ]; then 
+        else
             SID=$j
     fi
     if [[ "$line" == *"tvg-id"* ]]; then   
@@ -56,6 +56,12 @@ while read line;do
         else
             ChannelID="nodata"
     fi
+    if [[ "$line" == *"tvg-ID"* ]]; then   
+            ChannelID=${line##*tvg-ID=\"}
+            ChannelID=${ChannelID%%\"*}
+        else
+            ChannelID="nodata"
+    fi    
     if [[ "$line" == *"tvg-name"* ]]; then
             ChannelName=${line##*tvg-name=\"}
             ChannelName=${ChannelName%%\"*}
@@ -76,6 +82,7 @@ while read line;do
     fi
 
     Category="$group_title"" ""$group_title1"
+    Category=${Category// | /-}    
     Cat1=${Category// /_}
     Cat="$Provider"_"$Cat1"
     printf -v HexSID "%x" "$SID"
@@ -95,11 +102,11 @@ while read line;do
         ChannelID=${ChannelID//&/and}
         if [ "$ChannelID" != "nodata" ] 
             then
-            echo '<!-- IP_'$Cat' --><channel id="'$ChannelID'">'$Lead':0:1:'$HexSID:$TID':0:0:0:0:0:http%3a//example.com</channel><!-- '$ChannelName' -->' >> /tmp/$Channelsfile 
+            echo '<!-- IP_'$Cat' --><channel id="'$ChannelID'">'$Lead':0:1:'$HexSID:$TID':0:0:0:0:3:http%3a//example.com</channel><!-- '$ChannelName' -->' >> /tmp/$Channelsfile 
         fi
     fi
                   
-    echo "#SERVICE $Lead:0:1:$HexSID:$TID:0:0:0:0:0:$url:$ChannelName" >> /etc/enigma2/userbouquet.IP_$Cat.tv
+    echo "#SERVICE $Lead:0:1:$HexSID:$TID:0:0:0:0:3:$url:$ChannelName" >> /etc/enigma2/userbouquet.IP_$Cat.tv
 
 done < $m3ufile
 
