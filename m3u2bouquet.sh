@@ -84,6 +84,7 @@ while read line;do
     Category="$group_title"" ""$group_title1"
     Category=${Category// | /-}    
     Cat1=${Category// /_}
+    Cat1=${Cat1//+/}    
     Cat="$Provider"_"$Cat1"
     printf -v HexSID "%x" "$SID"
 
