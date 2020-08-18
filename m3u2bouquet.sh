@@ -8,7 +8,7 @@ if [ "$1" = "" ]
     echo "Provider: Provider Name, to identfy the entries in the bouquet and channels file"
     echo "TID: Up to 4 digit hexadecimal number, to disguish the services from different providers"
     echo "Servicetype: 1, 4097, 5001 or 5002.  If omitted 4097 is used"
-    echo "Version 1.1"  
+    echo "Version 1.2"  
 fi
 m3ufile=$1
 dos2unix ${m3ufile}
@@ -43,7 +43,8 @@ while read line;do
     group_title=""
     group_title1=""
     j=$((j + 1))
-
+    line=${line/tvg-ID=/tvg-id=}
+    echo $line
     if [[ "$line" == *"tvg-chno"* ]]; then
             SID=${line##*tvg-chno=\"}
             SID=${SID%%\"*}
@@ -56,12 +57,6 @@ while read line;do
         else
             ChannelID="nodata"
     fi
-    if [[ "$line" == *"tvg-ID"* ]]; then   
-            ChannelID=${line##*tvg-ID=\"}
-            ChannelID=${ChannelID%%\"*}
-        else
-            ChannelID="nodata"
-    fi    
     if [[ "$line" == *"tvg-name"* ]]; then
             ChannelName=${line##*tvg-name=\"}
             ChannelName=${ChannelName%%\"*}
