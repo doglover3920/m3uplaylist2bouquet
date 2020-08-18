@@ -1,5 +1,4 @@
 #!/bin/bash
-#usage: m3u2bouquet.sh m3ufile Provider TID ServiceType
 
 if [ "$1" = "" ]
     then
@@ -44,7 +43,6 @@ while read line;do
     group_title1=""
     j=$((j + 1))
     line=${line/tvg-ID=/tvg-id=}
-    echo $line
     if [[ "$line" == *"tvg-chno"* ]]; then
             SID=${line##*tvg-chno=\"}
             SID=${SID%%\"*}
